@@ -22,6 +22,8 @@ carReg = LinearRegression()
 carReg.fit(train_x, train_y)
 train_pred = carReg.predict(train_x)
 car_pre = pd.DataFrame({'TOTAL_VALUE': train_y, 'prediction': train_pred, 'residual': train_y - train_pred})
+print("car")
+print(car_pre)
 regressionSummary(train_y, train_pred)
 coeff = pd.DataFrame({"coefficient": carReg.coef_}, index=x.columns)
 print(coeff)
@@ -36,6 +38,8 @@ pred_error.hist()
 
 ######
 '''穷举搜索法'''
+# R2adj = 1 - (1-R2)(n-1)/(n-p-1)
+# AIC, BIC
 
 
 def train_model(variables):

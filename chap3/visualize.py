@@ -70,7 +70,7 @@ sns.heatmap(corr, vmin=-1, vmax=1, cmap="RdBu")
 # sns.heatmap(corr,annot=True,fmt=".1f",cmap="RdBu",center=0,ax=ax)
 plt.show()'''
 
-# housing_df.plot.scatter(x='LSTAT', y='NOX', color=['C0' if c == 1 else 'C1' for c in housing_df.CAT_MEDV])
+housing_df.plot.scatter(x='LSTAT', y='NOX', color=['C0' if c == 1 else 'C1' for c in housing_df.CAT_MEDV])
 #_, ax = plt.subplots()
 
 # 散点图 空心圆 分类
