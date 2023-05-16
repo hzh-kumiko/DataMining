@@ -90,6 +90,7 @@ for k in range(1, 15):
 # print(pd.DataFrame(results))
 
 # 上面的倒了k在4的时候准确率为0.9，重新训练所有的数据
+# 计算距离和近邻索引
 allx = ownerNorm[['zIncome', 'zLot_Size']]
 ally = ownerNorm.Ownership
 knn = KNeighborsClassifier(n_neighbors=4).fit(allx, ally)
