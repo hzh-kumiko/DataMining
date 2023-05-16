@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 mower_df = pd.read_csv("RidingMowers.csv")
 print(mower_df.columns)
-
+print(mower_df['Ownership'].value_counts())
 # mower_df['Number'] = mower_df.index + 1
 mower_df.insert(0, 'Number', mower_df.index + 1)  # 插在第一列后面,即为第二列
 # print(mower_df)
@@ -30,12 +30,26 @@ plt.legend()
 # plt.show()
 
 # 已有记录标准化
-scalar = preprocessing.StandardScaler()
+
+'''
+1、fit
+
+用于计算训练数据的均值和方差， 后面就会用均值和方差来转换训练数据
+
+2、fit_transform
+
+不仅计算训练数据的均值和方差，还会基于计算出来的均值和方差来转换训练数据，从而把数据转换成标准的正太分布
+
+3、transform
+
+很显然，它只是进行转换，只是把训练数据转换成标准的正态分布
+'''
+scalar = preprocessing.MinMaxScaler()
 scalar.fit(trainData[['Income', 'Lot_Size']])
 pd1 = pd.DataFrame(scalar.transform(mower_df[['Income', 'Lot_Size']]), columns=['zIncome', 'zLot_Size'])
 pd2 = mower_df[['Ownership', 'Number']]
 ownerNorm = pd.concat([pd1, pd2], axis=1)
-
+print(ownerNorm)
 # 得到测试集和验证集
 trainNorm = ownerNorm.iloc[trainData.index]
 validNorm = ownerNorm.iloc[validData.index]
@@ -44,6 +58,7 @@ print(validNorm)
 # 新纪录标准化
 new_dataNorm = pd.DataFrame(scalar.transform(new_data), columns=['zIncome', 'zLot_Size'])
 
+print(new_dataNorm)
 # 设置近邻个数，用这个只填充了输入，没有输入和输出的关系，只计算最近点的距离
 knn = NearestNeighbors(n_neighbors=3)
 # 填充样本
@@ -51,8 +66,8 @@ knn.fit(trainNorm.iloc[:, 0:2])
 
 # 计算新纪录的近邻
 distance, indices = knn.kneighbors(new_dataNorm)
-print(distance, indices)
-print(trainNorm.iloc[indices[0], :])
+# print(distance, indices)
+# print(trainNorm.iloc[indices[0], :])
 
 # 计算验证集的近邻
 distance, indices = knn.kneighbors(validNorm.iloc[:, 0:2])
@@ -72,17 +87,17 @@ for k in range(1, 15):
     knn = KNeighborsClassifier(n_neighbors=k).fit(trainx, trainy)
     results.append({'k': k, 'accuracy': accuracy_score(validy, knn.predict(validx))})
     # results.append({'k': k, 'pre': knn.predict(validx)==validy, 'accuracy': accuracy_score(validy, knn.predict(validx))})
-print(pd.DataFrame(results))
+# print(pd.DataFrame(results))
 
 # 上面的倒了k在4的时候准确率为0.9，重新训练所有的数据
 allx = ownerNorm[['zIncome', 'zLot_Size']]
 ally = ownerNorm.Ownership
-knn = KNeighborsClassifier(n_neighbors=4).fit(allx,ally)
-distance,indices=knn.kneighbors(new_dataNorm)
-print(knn.predict(new_dataNorm))
-print('distance:', distance)
-print(indices)
-print(ownerNorm.iloc[indices[0],:])
+knn = KNeighborsClassifier(n_neighbors=4).fit(allx, ally)
+distance, indices = knn.kneighbors(new_dataNorm)
+# print(knn.predict(new_dataNorm))
+# print('distance:', distance)
+# print(indices)
+print(ownerNorm.iloc[indices[0], :])
 
-
-
+# 优点：  无参数法
+# 缺点： 大型训练集下训练时间长，需要将为或搜索树加速搜索，训练集需要的记录数随变量个数呈指数级增长

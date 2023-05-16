@@ -16,7 +16,8 @@ sns.heatmap(corr, xticklabels=corr.columns, yticklabels=corr.columns,
 analysis_data = pd.DataFrame({'mean:': housing_df.mean(), 'sd': housing_df.std(), 'min': housing_df.min()})
 housing_df['RM_bin'] = pd.cut(housing_df.RM, range(0, 10), labels=False)
 print(housing_df)
-# print(housing_df.groupby(['RM_bin', 'CHAS']).MEDV.mean())
+print(housing_df.groupby(['RM_bin', 'CHAS']).MEDV.mean())
+# 透视表，aggfunc默认为mean
 print(pd.pivot_table(housing_df, values='MEDV', index=['RM_bin'], columns=['CHAS'], aggfunc=[np.mean, np.std],
                      margins=True))
 # housing_df.CAT_MEDV = housing_df.CAT_MEDV.astype('category')
@@ -24,9 +25,9 @@ print(pd.pivot_table(housing_df, values='MEDV', index=['RM_bin'], columns=['CHAS
 # print(housing_df.columns)
 
 tb1 = pd.crosstab(housing_df.CAT_MEDV, housing_df.ZN)
-print("tb1",tb1)
+print("tb1", tb1)
 propTb1 = tb1 / tb1.sum()
 print(propTb1)
-propTb1.transpose().plot(kind='bar',stacked=True)
-plt.legend(loc='center left',bbox_to_anchor=(1,0.5))
+propTb1.transpose().plot(kind='bar', stacked=True)
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.show()
