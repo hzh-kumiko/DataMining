@@ -23,8 +23,7 @@ pcsSummary1 = pd.DataFrame({'Standard deviation': np.sqrt(pcs1.explained_varianc
                            index=['PC{}'.format(i) for i in range(1, len(pcs1.explained_variance_) + 1)])
 
 pcsSummary1 = pcsSummary1.transpose().round(4)
-# print(pcsSummary)
-# print(pcsSummary1)
+
 pcsComponents_df = pd.DataFrame(pcs1.components_.transpose(), columns=pcsSummary1.columns, index=cereals_df.columns[3:])
 # print(pcsComponents_df)
 print(pcsComponents_df)
