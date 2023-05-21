@@ -44,6 +44,24 @@ plt.legend()
 
 很显然，它只是进行转换，只是把训练数据转换成标准的正态分布
 '''
+
+'''
+1.归一化 preprocessing.MinMaxScalar, StandardScalar
+2.上述的fit
+3.transform转换
+4.将预测扁蕾归一化，然后和其结果组合 concat
+5.得到训练集和验证集，把要预测的数据也进行归一化
+如果确定近邻个数
+6.knn = NearestNeighbors(n_neighbors=3)，knn.fit(trainNorm.iloc[:, 0:2])，只需要输入变量
+7.计算近邻距离和索引 distance, indices = knn.kneighbors(new_dataNorm)
+如果想要确定最佳近邻个数
+8.knn = KNeighborsClassifier(n_neighbors=k).fit(trainx, trainy)
+9.计算在验证集上的准确度 accuracy_score(validy, knn.predict(validx))
+10.采用准确率最高的k，重新用数据集的数据
+allx = ownerNorm[['zIncome', 'zLot_Size']]
+ally = ownerNorm.Ownership
+knn = KNeighborsClassifier(n_neighbors=4).fit(allx, ally)
+'''
 scalar = preprocessing.MinMaxScaler()
 scalar.fit(trainData[['Income', 'Lot_Size']])
 pd1 = pd.DataFrame(scalar.transform(mower_df[['Income', 'Lot_Size']]), columns=['zIncome', 'zLot_Size'])

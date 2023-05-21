@@ -33,6 +33,7 @@ plt.show()
 # FP TN
 # 灵敏度 n11/(n11+n12)
 # 特异度 n22/(m21+n22)
+# ROC表示灵敏度，1-特异度值从临界值从1-0的变化
 # AUC
 
 fpr, tpr, _ = roc_curve(df.actual, df.prob)

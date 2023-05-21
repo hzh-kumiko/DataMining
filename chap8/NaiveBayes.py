@@ -4,7 +4,7 @@ from sklearn.naive_bayes import MultinomialNB
 import matplotlib.pyplot as plt
 from dmba import classificationSummary, gainsChart
 
-# 分类预测变量
+# 分类预测变量 朴素贝叶斯
 # P(C1|x1,..xn) = P(C1)[P(x1|C1)P(x2|C1)···P(xn|C1)] / P(C1)[P(x1|C1)···P(xn|C1)]+...P(Cm)[P(x1|Cm)···P(xn|Cm)]
 
 # 预测航班是否延误
@@ -29,6 +29,13 @@ Y = delay_df['Flight_Status']
 print(list(Y.cat.categories))
 train_x, valid_x, train_y, valid_y = train_test_split(X, Y, test_size=0.4, random_state=1)
 
+'''
+1.分类变量get_dummies
+2.朴素贝叶斯模型delay_nb = MultinomialNB(alpha=0.01)，delay_nb.fit(train_x, train_y)
+3.预测结果概率delay_nb.predict_proba
+
+另一种 用透视表计算每个种类航班延误与否的情况
+'''
 delay_nb = MultinomialNB(alpha=0.01)
 delay_nb.fit(train_x, train_y)
 
@@ -60,14 +67,14 @@ print(df)
 # print(valid_x.columns)
 # 在验证集上存在的化
 mask = ((valid_x.CARRIER_DL == 1) & (valid_x.DAY_WEEK_7 == 1) & (valid_x.DEST_LGA == 1) & (
-            valid_x['CRS_DEP_TIME_10.0'] == 1) & (valid_x.ORIGIN_DCA == 1))
+        valid_x['CRS_DEP_TIME_10.0'] == 1) & (valid_x.ORIGIN_DCA == 1))
 print(mask)
 print(df[mask])
-valid = pd.DataFrame(y_valid_pred,index=valid_y.index,columns=['actualll'])
-classificationSummary(train_y,delay_nb.predict(train_x),class_names=['delayed','ontime'])
-classificationSummary(valid_y,y_valid_pred,class_names=['delayed','ontime'])
-df = pd.concat([pd.DataFrame({'actual':1-valid_y.cat.codes}),pred_valid_prob.delayed],axis=1)
-df=df.sort_values(by=['delayed'],ascending=False).reset_index(drop=True)
+valid = pd.DataFrame(y_valid_pred, index=valid_y.index, columns=['actualll'])
+classificationSummary(train_y, delay_nb.predict(train_x), class_names=['delayed', 'ontime'])
+classificationSummary(valid_y, y_valid_pred, class_names=['delayed', 'ontime'])
+df = pd.concat([pd.DataFrame({'actual': 1 - valid_y.cat.codes}), pred_valid_prob.delayed], axis=1)
+df = df.sort_values(by=['delayed'], ascending=False).reset_index(drop=True)
 gainsChart(df.actual)
 plt.show()
 print(df)
