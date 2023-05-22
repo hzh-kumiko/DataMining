@@ -4,8 +4,10 @@ from sklearn.naive_bayes import MultinomialNB
 import matplotlib.pyplot as plt
 from dmba import classificationSummary, gainsChart
 
-# 分类预测变量 朴素贝叶斯
-# P(C1|x1,..xn) = P(C1)[P(x1|C1)P(x2|C1)···P(xn|C1)] / P(C1)[P(x1|C1)···P(xn|C1)]+...P(Cm)[P(x1|Cm)···P(xn|Cm)]
+'''
+分类预测变量 朴素贝叶斯
+ P(C1|x1,..xn) = P(C1)[P(x1|C1)P(x2|C1)···P(xn|C1)] / P(C1)[P(x1|C1)···P(xn|C1)]+...P(Cm)[P(x1|Cm)···P(xn|Cm)]
+'''
 
 # 预测航班是否延误
 # 只分析该数据集的五个变量 DAY_WEEK, CRS_DEP_TIME, ORIGIN, DEST, CARRIER
@@ -34,7 +36,12 @@ train_x, valid_x, train_y, valid_y = train_test_split(X, Y, test_size=0.4, rando
 2.朴素贝叶斯模型delay_nb = MultinomialNB(alpha=0.01)，delay_nb.fit(train_x, train_y)
 3.预测结果概率delay_nb.predict_proba
 
-另一种 用透视表计算每个种类航班延误与否的情况
+另一种 用透视表计算每个种类航班延误与否的情况, 
+1.train_df.Flight_Status.value_counts() / len(train_df)得到P(ontime)&P(delayed)概率
+2.pivot_table 得到 这就得到了P(xi|C1/2)的概率
+3.计算分子 P(C1)[P(x1|C1)P(x2|C1)···P(xn|C1)]
+
+如果可以在数据集上找到相同记录的数据则直接看 
 '''
 delay_nb = MultinomialNB(alpha=0.01)
 delay_nb.fit(train_x, train_y)
