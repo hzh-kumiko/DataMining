@@ -29,13 +29,14 @@ line_error = plt.plot(cutoffs, [1 - acc for acc in accT], '--', label='error')
 plt.legend()
 plt.show()
 
-# TP FN
-# FP TN
-# 灵敏度 n11/(n11+n12)
-# 特异度 n22/(m21+n22)
-# ROC表示灵敏度，1-特异度值从临界值从1-0的变化
-# AUC
-
+'''
+TP FN
+FP TN
+灵敏度 n11/(n11+n12)
+特异度 n22/(m21+n22)
+ROC 表示灵敏度，1-特异度值从临界值从1-0的变化
+AUC
+'''
 fpr, tpr, _ = roc_curve(df.actual, df.prob)
 roc_auc = auc(fpr, tpr)
 print(fpr, tpr)
