@@ -46,6 +46,7 @@ plt.legend()
 '''
 
 '''
+使用k近邻算法需要把分类变量转换成二元虚拟变量，且m个虚拟变量不能用m-1个来表示 
 1.归一化 preprocessing.MinMaxScalar, StandardScalar
 2.上述的fit
 3.transform转换
